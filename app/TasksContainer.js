@@ -13,10 +13,18 @@ export default class TasksContainer extends React.Component {
         });
 	}
 
+	handleRemoveTask(index) { 
+		this.state.tasks.splice(index, 1);
+        this.setState({
+            tasks: this.state.tasks
+        })
+	}	
+
 	render() {
+		console.log(this)
 		const taskList = this.state.tasks.map((task, index) => 
 				<li key={index} className="task" style={styles.li}>
-					<span>
+					<span onClick={::this.handleRemoveTask.bind(this, index)}>
 						<i className="fa fa-trash-o"></i>
 					</span>
 					<span>

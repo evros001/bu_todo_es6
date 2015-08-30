@@ -20517,15 +20517,28 @@
 				});
 			}
 		}, {
+			key: 'handleRemoveTask',
+			value: function handleRemoveTask(index) {
+				this.state.tasks.splice(index, 1);
+				this.setState({
+					tasks: this.state.tasks
+				});
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				var _this = this;
+
+				console.log(this);
 				var taskList = this.state.tasks.map(function (task, index) {
+					var _context;
+
 					return _react2['default'].createElement(
 						'li',
 						{ key: index, className: 'task', style: styles.li },
 						_react2['default'].createElement(
 							'span',
-							null,
+							{ onClick: (_context = _this.handleRemoveTask).bind.call(_context, _this, index) },
 							_react2['default'].createElement('i', { className: 'fa fa-trash-o' })
 						),
 						_react2['default'].createElement(
