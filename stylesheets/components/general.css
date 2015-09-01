@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.tasks-container ul, .item-list{
+	list-style: none;
+}
+
+.app-container {
+	display: flex;
+}
+
+.nav-container {
+	display: flex;
+	background-color: #EDEDED;
+	height: 100vh;
+}

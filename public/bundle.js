@@ -60,9 +60,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TasksContainerJs = __webpack_require__(157);
+	var _interactivityInteractJs = __webpack_require__(174);
 
-	var _TasksContainerJs2 = _interopRequireDefault(_TasksContainerJs);
+	var _interactivityInteractJs2 = _interopRequireDefault(_interactivityInteractJs);
+
+	var _stylesheetsMainCss = __webpack_require__(157);
+
+	var _stylesheetsMainCss2 = _interopRequireDefault(_stylesheetsMainCss);
+
+	var _ToDoContainerJs = __webpack_require__(163);
+
+	var _ToDoContainerJs2 = _interopRequireDefault(_ToDoContainerJs);
 
 	var App = (function (_React$Component) {
 		_inherits(App, _React$Component);
@@ -78,8 +86,8 @@
 			value: function render() {
 				return _react2['default'].createElement(
 					'div',
-					null,
-					_react2['default'].createElement(_TasksContainerJs2['default'], null)
+					{ className: 'app-container' },
+					_react2['default'].createElement(_ToDoContainerJs2['default'], null)
 				);
 			}
 		}]);
@@ -20468,6 +20476,356 @@
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(158);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(162)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./main.css", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./main.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(159)();
+	// imports
+	exports.i(__webpack_require__(160), "");
+	exports.i(__webpack_require__(161), "");
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 159 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(159)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n\tmargin: 0;\n\tpadding: 0;\n}\n\n.tasks-container ul, .item-list{\n\tlist-style: none;\n}\n\n.app-container {\n\tdisplay: flex;\n}\n\n.nav-container {\n\tdisplay: flex;\n\tbackground-color: #EDEDED;\n\theight: 100vh;\n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(159)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".project-list {\n\tlist-style: none;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0;
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function createStyleElement() {
+		var styleElement = document.createElement("style");
+		var head = getHeadElement();
+		styleElement.type = "text/css";
+		head.appendChild(styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement() {
+		var linkElement = document.createElement("link");
+		var head = getHeadElement();
+		linkElement.rel = "stylesheet";
+		head.appendChild(linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement());
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement();
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement();
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
@@ -20488,13 +20846,197 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TaskJs = __webpack_require__(158);
+	var _ProjectsComponentProjectsContainerJs = __webpack_require__(164);
+
+	var _ProjectsComponentProjectsContainerJs2 = _interopRequireDefault(_ProjectsComponentProjectsContainerJs);
+
+	var _TasksComponentTasksContainerJs = __webpack_require__(165);
+
+	var _TasksComponentTasksContainerJs2 = _interopRequireDefault(_TasksComponentTasksContainerJs);
+
+	var _TeamComponentTeamContainerJs = __webpack_require__(171);
+
+	var _TeamComponentTeamContainerJs2 = _interopRequireDefault(_TeamComponentTeamContainerJs);
+
+	var _TaskDetailsComponentTaskDetailsContainerJs = __webpack_require__(172);
+
+	var _TaskDetailsComponentTaskDetailsContainerJs2 = _interopRequireDefault(_TaskDetailsComponentTaskDetailsContainerJs);
+
+	var ToDoContainer = (function (_React$Component) {
+		_inherits(ToDoContainer, _React$Component);
+
+		function ToDoContainer() {
+			_classCallCheck(this, ToDoContainer);
+
+			_get(Object.getPrototypeOf(ToDoContainer.prototype), 'constructor', this).apply(this, arguments);
+
+			this.state = {
+				selectedProject: ''
+			};
+		}
+
+		_createClass(ToDoContainer, [{
+			key: 'handleProjectSelect',
+			value: function handleProjectSelect(selectedProject) {
+				this.setState({
+					selectedProject: selectedProject
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2['default'].createElement(
+					'div',
+					{ className: 'nav-container' },
+					_react2['default'].createElement(_ProjectsComponentProjectsContainerJs2['default'], { projectSelected: this.handleProjectSelect.bind(this) }),
+					_react2['default'].createElement(_TeamComponentTeamContainerJs2['default'], null),
+					_react2['default'].createElement(_TasksComponentTasksContainerJs2['default'], { project: this.state.selectedProject }),
+					_react2['default'].createElement(_TaskDetailsComponentTaskDetailsContainerJs2['default'], null)
+				);
+			}
+		}]);
+
+		return ToDoContainer;
+	})(_react2['default'].Component);
+
+	exports['default'] = ToDoContainer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _AddProjectJs = __webpack_require__(173);
+
+	var _AddProjectJs2 = _interopRequireDefault(_AddProjectJs);
+
+	var _ProjectJs = __webpack_require__(175);
+
+	var _ProjectJs2 = _interopRequireDefault(_ProjectJs);
+
+	var ProjectsContainer = (function (_React$Component) {
+		_inherits(ProjectsContainer, _React$Component);
+
+		function ProjectsContainer() {
+			_classCallCheck(this, ProjectsContainer);
+
+			_get(Object.getPrototypeOf(ProjectsContainer.prototype), 'constructor', this).apply(this, arguments);
+
+			this.state = {
+				projects: []
+			};
+		}
+
+		_createClass(ProjectsContainer, [{
+			key: 'handleAddProject',
+			value: function handleAddProject(newProject) {
+				this.setState({
+					projects: this.state.projects.concat([newProject])
+				});
+			}
+		}, {
+			key: 'handleRemoveProject',
+			value: function handleRemoveProject(index) {
+				this.state.projects.splice(index, 1);
+				this.setState({
+					projects: this.state.projects
+				});
+			}
+		}, {
+			key: 'handleSelectProject',
+			value: function handleSelectProject(index) {
+				var project = this.state.projects[index];
+				this.props.projectSelected(project);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this = this;
+
+				var projectList = this.state.projects.map(function (project, index) {
+					var _context;
+
+					return _react2['default'].createElement(_ProjectJs2['default'], { project: project, index: index, onClick: (_context = _this.handleSelectProject).bind.call(_context, _this, index) });
+				});
+				return _react2['default'].createElement(
+					'div',
+					{ className: 'projects-container' },
+					_react2['default'].createElement(
+						'div',
+						{ className: 'projects-title' },
+						'Projects'
+					),
+					_react2['default'].createElement(
+						'ul',
+						{ className: 'project-list' },
+						projectList
+					),
+					_react2['default'].createElement(_AddProjectJs2['default'], { addProject: this.handleAddProject.bind(this) })
+				);
+			}
+		}]);
+
+		return ProjectsContainer;
+	})(_react2['default'].Component);
+
+	exports['default'] = ProjectsContainer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TaskJs = __webpack_require__(166);
 
 	var _TaskJs2 = _interopRequireDefault(_TaskJs);
 
-	var _AddTaskJs = __webpack_require__(161);
+	var _AddTaskJs = __webpack_require__(169);
 
 	var _AddTaskJs2 = _interopRequireDefault(_AddTaskJs);
+
+	var _TaskScheduleJs = __webpack_require__(170);
+
+	var _TaskScheduleJs2 = _interopRequireDefault(_TaskScheduleJs);
 
 	var TasksContainer = (function (_React$Component) {
 		_inherits(TasksContainer, _React$Component);
@@ -20535,7 +21077,7 @@
 
 					return _react2['default'].createElement(
 						'li',
-						{ key: index, className: 'task', style: styles.li },
+						{ key: index, className: 'task' },
 						_react2['default'].createElement(
 							'span',
 							{ onClick: (_context = _this.handleRemoveTask).bind.call(_context, _this, index) },
@@ -20551,9 +21093,15 @@
 				return _react2['default'].createElement(
 					'div',
 					{ className: 'tasks-container' },
+					_react2['default'].createElement(_TaskScheduleJs2['default'], null),
+					_react2['default'].createElement(
+						'div',
+						{ className: 'task-project-title' },
+						this.props.project
+					),
 					_react2['default'].createElement(
 						'ul',
-						{ style: styles.uList },
+						null,
 						taskList
 					),
 					_react2['default'].createElement(_AddTaskJs2['default'], { addTask: this.handleAddTask.bind(this) })
@@ -20565,19 +21113,10 @@
 	})(_react2['default'].Component);
 
 	exports['default'] = TasksContainer;
-
-	var styles = {
-		uList: {
-			listStyle: "none"
-		},
-		li: {
-			display: "flex"
-		}
-	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 158 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20600,11 +21139,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _AddItemJs = __webpack_require__(159);
+	var _AddItemJs = __webpack_require__(167);
 
 	var _AddItemJs2 = _interopRequireDefault(_AddItemJs);
 
-	var _ItemsJs = __webpack_require__(160);
+	var _ItemsJs = __webpack_require__(168);
 
 	var _ItemsJs2 = _interopRequireDefault(_ItemsJs);
 
@@ -20664,7 +21203,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 159 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20743,7 +21282,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 160 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20775,6 +21314,12 @@
 			_get(Object.getPrototypeOf(Items.prototype), "constructor", this).apply(this, arguments);
 		}
 
+		// const styles = {
+		// 	uList: {
+		// 		listStyle: "none"
+		// 	}
+		// }
+
 		_createClass(Items, [{
 			key: "render",
 			value: function render() {
@@ -20798,7 +21343,7 @@
 				});
 				return _react2["default"].createElement(
 					"ul",
-					{ className: "item-list", style: styles.uList },
+					{ className: "item-list" },
 					items
 				);
 			}
@@ -20808,16 +21353,10 @@
 	})(_react2["default"].Component);
 
 	exports["default"] = Items;
-
-	var styles = {
-		uList: {
-			listStyle: "none"
-		}
-	};
 	module.exports = exports["default"];
 
 /***/ },
-/* 161 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20894,6 +21433,311 @@
 
 	exports['default'] = AddTask;
 	module.exports = exports['default'];
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var TaskSchedule = (function (_React$Component) {
+		_inherits(TaskSchedule, _React$Component);
+
+		function TaskSchedule() {
+			_classCallCheck(this, TaskSchedule);
+
+			_get(Object.getPrototypeOf(TaskSchedule.prototype), "constructor", this).apply(this, arguments);
+		}
+
+		_createClass(TaskSchedule, [{
+			key: "render",
+			value: function render() {
+				return _react2["default"].createElement(
+					"div",
+					{ className: "task-schedule-container" },
+					"Task Schedule"
+				);
+			}
+		}]);
+
+		return TaskSchedule;
+	})(_react2["default"].Component);
+
+	exports["default"] = TaskSchedule;
+	module.exports = exports["default"];
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var TeamContainer = (function (_React$Component) {
+		_inherits(TeamContainer, _React$Component);
+
+		function TeamContainer() {
+			_classCallCheck(this, TeamContainer);
+
+			_get(Object.getPrototypeOf(TeamContainer.prototype), "constructor", this).apply(this, arguments);
+		}
+
+		_createClass(TeamContainer, [{
+			key: "render",
+			value: function render() {
+				return _react2["default"].createElement(
+					"div",
+					{ className: "team-container" },
+					"Team Container"
+				);
+			}
+		}]);
+
+		return TeamContainer;
+	})(_react2["default"].Component);
+
+	exports["default"] = TeamContainer;
+	module.exports = exports["default"];
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var TaskDetailsContainer = (function (_React$Component) {
+		_inherits(TaskDetailsContainer, _React$Component);
+
+		function TaskDetailsContainer() {
+			_classCallCheck(this, TaskDetailsContainer);
+
+			_get(Object.getPrototypeOf(TaskDetailsContainer.prototype), "constructor", this).apply(this, arguments);
+		}
+
+		_createClass(TaskDetailsContainer, [{
+			key: "render",
+			value: function render() {
+				return _react2["default"].createElement(
+					"div",
+					{ className: "task-details-container" },
+					"details"
+				);
+			}
+		}]);
+
+		return TaskDetailsContainer;
+	})(_react2["default"].Component);
+
+	exports["default"] = TaskDetailsContainer;
+	module.exports = exports["default"];
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var AddProject = (function (_React$Component) {
+		_inherits(AddProject, _React$Component);
+
+		function AddProject() {
+			_classCallCheck(this, AddProject);
+
+			_get(Object.getPrototypeOf(AddProject.prototype), 'constructor', this).apply(this, arguments);
+
+			this.state = {
+				project: ''
+			};
+		}
+
+		_createClass(AddProject, [{
+			key: 'handleChange',
+			value: function handleChange(e) {
+				this.setState({
+					project: e.target.value
+				});
+			}
+		}, {
+			key: 'handleSubmit',
+			value: function handleSubmit(e) {
+				e.preventDefault();
+				this.props.addProject(this.state.project);
+				this.setState({
+					project: ""
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2['default'].createElement(
+					'div',
+					{ className: 'add-project-button' },
+					_react2['default'].createElement('i', { className: 'fa fa-plus' }),
+					_react2['default'].createElement(
+						'button',
+						null,
+						'Add Catagory'
+					),
+					_react2['default'].createElement(
+						'form',
+						{ onSubmit: this.handleSubmit.bind(this), className: 'add-project-form hidden' },
+						_react2['default'].createElement('input', { type: 'text', onChange: this.handleChange.bind(this), value: this.state.project }),
+						_react2['default'].createElement(
+							'button',
+							{ type: 'submit' },
+							'Add Project'
+						)
+					)
+				);
+			}
+		}]);
+
+		return AddProject;
+	})(_react2['default'].Component);
+
+	exports['default'] = AddProject;
+	module.exports = exports['default'];
+
+/***/ },
+/* 174 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	// document.addEventListener('DOMContentLoaded', function(){
+	//     document.getElementsByClassName('list-project').addEventListener("click", function(){
+
+	//     })
+	// }, false);
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var Project = (function (_React$Component) {
+		_inherits(Project, _React$Component);
+
+		function Project() {
+			_classCallCheck(this, Project);
+
+			_get(Object.getPrototypeOf(Project.prototype), "constructor", this).apply(this, arguments);
+		}
+
+		_createClass(Project, [{
+			key: "render",
+			value: function render() {
+				var _context;
+
+				return _react2["default"].createElement(
+					"li",
+					{ className: "project", key: this.props.index },
+					_react2["default"].createElement("i", { className: "fa fa-circle" }),
+					_react2["default"].createElement(
+						"span",
+						null,
+						this.props.project
+					),
+					_react2["default"].createElement("i", { className: "fa fa-times", onClick: (_context = this.handleRemoveProject).bind.call(_context, this, index) })
+				);
+			}
+		}]);
+
+		return Project;
+	})(_react2["default"].Component);
+
+	exports["default"] = Project;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

@@ -1,11 +1,14 @@
 import React from 'react';
-import TasksContainer from './TasksContainer.js';
+import interactivity from '../interactivity/interact.js';
+import StyleSheet from '../stylesheets/main.css';
+import ToDoContainer from './ToDoContainer.js';
+
 
 class App extends React.Component {
 	render() {
 		return(
-			<div>
-				<TasksContainer />
+			<div className="app-container">
+				<ToDoContainer />
 			</div>
 		)
 	}	
