@@ -11,7 +11,7 @@ body {
 	display: flex;
 }
 
-.nav-container {
+.todo-container {
 	display: flex;
 	background-color: #EDEDED;
 	height: 100vh;

@@ -24,7 +24,7 @@ export default class AddProject extends React.Component {
 		return (
 			<div className="add-project-button">
 				<i className="fa fa-plus"></i>
-				<button>Add Catagory</button>
+				<button>Add Project</button>
 				<form onSubmit={::this.handleSubmit} className="add-project-form hidden">
 					<input type="text" onChange={::this.handleChange} value={this.state.project}/>
 					<button type="submit">Add Project</button>

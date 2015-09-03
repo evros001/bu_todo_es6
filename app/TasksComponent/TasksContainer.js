@@ -22,14 +22,14 @@ export default class TasksContainer extends React.Component {
 	}	
 
 	render() {
-		console.log(this)
+		debugger;
 		const taskList = this.state.tasks.map((task, index) => 
 				<li key={index} className="task">
 					<span onClick={::this.handleRemoveTask.bind(this, index)}>
 						<i className="fa fa-trash-o"></i>
 					</span>
 					<span>
-						<Task title={task} />
+						<Task title={task} projectSelected={this.props.projectSelected[0][0]}/>
 					</span>
 				</li>
 		);

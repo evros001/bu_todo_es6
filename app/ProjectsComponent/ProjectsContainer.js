@@ -4,7 +4,8 @@ import Project from './Project.js';
 
 export default class ProjectsContainer extends React.Component {
 	state = {
-		projects: []
+		projects: [],
+		projectSelected: []
 	}
 
 	handleAddProject(newProject) {
@@ -21,14 +22,25 @@ export default class ProjectsContainer extends React.Component {
 	}
 
 	handleSelectProject(index) {
-		const project = this.state.projects[index];
-		this.props.projectSelected(project)
+		this.setState({
+			projectSelected: this.state.projectSelected.concat([index])
+		}, function() { 
+			if(this.state.projectSelected.length>0) {
+				this.props.projectSelected(this.state.projectSelected)
+			}
+		})
 	}
 
 	render() {
 		const projectList = this.state.projects.map((project, index) => 
-			<Project project={project} index={index} onClick={::this.handleSelectProject.bind(this, index)} />
+			<Project 
+				key={index} 
+				project={project} 
+				remove={::this.handleRemoveProject} 
+				selected={::this.handleSelectProject}
+			/>
 		);
+		
 		return (
 			<div className="projects-container">
 				<div className="projects-title">

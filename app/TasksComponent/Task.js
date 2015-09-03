@@ -4,12 +4,13 @@ import Items from './Items.js'
 
 export default class List extends React.Component {
     state = {
-        items: []
+        items: [],
+        project: this.props.projectSelected
     }
     
     handleAddItem(newItem) {
         this.setState({
-            items: this.state.items.concat([newItem])
+            items: this.state.items.concat([newItem]),
         });
     }
 
@@ -21,11 +22,13 @@ export default class List extends React.Component {
     }
 
     render() {
+        debugger;
         return (
             <div className="task-items-container">
                 <h3 className="task-title">
                     {this.props.title}
                 </h3>
+                <p>{this.state.project}</p>
                 <div className="task-list-container">
                     <Items items={this.state.items} remove={::this.handleRemove}/>
                     <AddItem add={::this.handleAddItem} />

@@ -6,20 +6,20 @@ import TaskDetailsContainer from './TaskDetailsComponent/TaskDetailsContainer.js
 
 export default class ToDoContainer extends React.Component {
 	state = {
-		selectedProject: ''
+		selectedProject: []
 	}
 	handleProjectSelect(selectedProject) {
 		this.setState({
-			selectedProject: selectedProject
-		})
+            selectedProject: this.state.selectedProject.concat([selectedProject])
+        }, () => this.state.selectedProject.shift());
 	}
 
 	render() {
 		return (
-			<div className="nav-container">
+			<div className="todo-container">
 				<ProjectsContainer projectSelected={::this.handleProjectSelect}/>
 				<TeamContainer />
-				<TasksContainer project={this.state.selectedProject}/>
+				<TasksContainer projectSelected={this.state.selectedProject}/>
 				<TaskDetailsContainer />
 			</div>
 		)
